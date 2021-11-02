@@ -23,6 +23,10 @@ template.innerHTML =
         text-align: center;
         padding: 0;
     }
+    
+    button:hover {
+        background-color: gray;
+    }
 
     #search-button:hover {
         background-color: rgb(255,69,0);
@@ -82,19 +86,7 @@ template.innerHTML =
 <div>
     <span class="span-speed">
         <label for="volume">Vitesse</label>
-        <input type="range" id="speed" name="speed" min="0.25" max="4" step="0.25" value="1" list="tickmarks">
-        <datalist id="tickmarks">
-            <option value="0.25">
-            <option value="0.5" label="0.5">
-            <option value="0.75">
-            <option value="1" label="1">
-            <option value="1.5">
-            <option value="2" label="2">
-            <option value="2.5">
-            <option value="3" label="3">
-            <option value="3.5">
-            <option value="4" label="4">
-        </datalist> 
+        <input type="range" id="speed" name="speed" min="0.25" max="4" step="0.25" value="1">
     </span>
     <button id="reset">
         <img src="./assets/templates/ButtonPlayPause/assets/icon-reset.png" width="20"/> 
@@ -113,7 +105,7 @@ template.innerHTML =
 
     <span class="span-volume">
         <label for="volume">Volume</label>
-        <input type="range" id="volume" name="volume" min="0" max="1" step="0.05" value="1">
+        <input type="range" id="volume" name="volume" min="0" max="1" step="0.05" value="0.4">
     </span>
 </div>`
 

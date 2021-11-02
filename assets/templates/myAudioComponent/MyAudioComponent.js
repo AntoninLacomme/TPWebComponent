@@ -77,10 +77,18 @@ class MyAudioComponent extends HTMLElement {
             elem.setAudioController (this)
         })
 
-
         this.audio = this.shadowRoot.querySelector ("#myPlayer")
-        console.log (this.audio)
-        this.audio.src = this.getAttribute("src")
+        this.playlist = [];
+
+        if (this.getAttribute ("src") != null) {
+            this.playlist.push (this.getAttribute("src"))
+        }
+        let _playlist = this.getAttribute ("playlist");
+        if (_playlist != null) {
+            _playlist.split(",").forEach ((e) => {
+                this.playlist.push (e.trim ())
+            })
+        }
         let _loop = this.getAttribute ("loop")
         if (_loop != null) {
             if (_loop.toUpperCase () == "TRUE") {
@@ -89,10 +97,17 @@ class MyAudioComponent extends HTMLElement {
                 this.shadowRoot.querySelector ("button-play-pause").setloop (false)
             }
         }
+
+        this.indexPlaylist = 0;
+        this.audio.src = this.playlist[this.indexPlaylist]
+        
+        this.audio.onended = (ev) => {
+            this.indexPlaylist = (this.indexPlaylist >= this.playlist.length) ? 0 : this.indexPlaylist++
+            this.audio.src = this.playlist[this.indexPlaylist]
+        }
+        
         
         this.audioCtx = new AudioContext();
-
-        this.shadowRoot.querySelector ("#myPlayer").src = this.getAttribute ("src")
 
         this.audio.addEventListener('timeupdate', (ev) => {
             this.shadowRoot.querySelector ("#progress-bar").style.width = (this.audio.currentTime / this.audio.duration) * 100 + "%"
@@ -191,7 +206,7 @@ class MyAudioComponent extends HTMLElement {
 
     play (play) { 
         if (play) {
-            this.getPlayer ().play ()
+            this.audio.play ()
             this.audioCtx.resume()
         } else {
             this.getPlayer ().pause () 
