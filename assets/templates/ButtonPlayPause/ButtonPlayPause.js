@@ -1,3 +1,10 @@
+import './libs/webaudio-controls.js';
+
+const getBaseURL = () => {
+    const base = new URL('.', import.meta.url);
+    return `${base}`;
+};
+
 const template = document.createElement ("template");
 template.innerHTML = 
 `<style>
@@ -45,7 +52,6 @@ template.innerHTML =
     }
 
     #loop {
-        border: outset 5px gray;
         margin-left: 2em;
     }
 
@@ -81,12 +87,17 @@ template.innerHTML =
         margin-right: auto;
     }
 
+    #speed, #volume, #loop {
+        position: relative;
+        top: 23px;
+    }
+
 </style>
 
 <div>
     <span class="span-speed">
-        <label for="volume">Vitesse</label>
-        <input type="range" id="speed" name="speed" min="0.25" max="4" step="0.25" value="1">
+        <webaudio-knob id="speed" tooltip="Vitesse:%s" src="assets/templates/ButtonPlayPause/assets/bouton2.png" sprites="127" value=1 min="0.25" max="4" step=0.25>
+        Volume</webaudio-knob>
     </span>
     <button id="reset">
         <img src="./assets/templates/ButtonPlayPause/assets/icon-reset.png" width="20"/> 
@@ -99,13 +110,13 @@ template.innerHTML =
         <img src="./assets/templates/ButtonPlayPause/assets/icon-avancer-10.png" width="20"/> 
     </button>
 
-    <button id="loop">
-        <img src="./assets/templates/ButtonPlayPause/assets/icon-loop.png" width="20"/> 
-    </button>
+    <webaudio-switch midilearn="1" id="loop"
+        src="assets/templates/ButtonPlayPause/assets/switch_toggle.png" height="56" width="56" tooltip="Loop">
+    </webaudio-switch>
 
     <span class="span-volume">
-        <label for="volume">Volume</label>
-        <input type="range" id="volume" name="volume" min="0" max="1" step="0.05" value="0.4">
+        <webaudio-knob id="volume" tooltip="Volume:%s" src="assets/templates/ButtonPlayPause/assets/bouton2.png" sprites="127" value=0.05 min="0" max="1" step=0.01>
+        Volume</webaudio-knob>
     </span>
 </div>`
 
@@ -120,11 +131,12 @@ class ButtonPlayPause extends HTMLElement {
         super();
 
         this.attachShadow({ mode: "open" });
+
+        this.shadowRoot.appendChild(template.content.cloneNode(true));
+        this.basePath = getBaseURL();
     }
 
     connectedCallback() {
-        this.shadowRoot.appendChild(template.content.cloneNode(true));
-
         // set button play / pause
         let buttonPlayPause = this.shadowRoot.querySelector ("#search-button")
         buttonPlayPause.innerHTML = templatePlay.innerHTML
@@ -151,11 +163,17 @@ class ButtonPlayPause extends HTMLElement {
         this.shadowRoot.querySelector ("#speed").oninput = () => this.switchSpeed ()
     }
 
+    init () {
+        this.switchVolume ()
+        this.switchVolume ()
+    }
+
     setAudioController (audioComponent) {
-        this.audioComponent = audioComponent;
+        this.audioComponent = audioComponent
     }
 
     setloop (loop) {
+        this.shadowRoot.querySelector ("#loop").value = loop;
         this.loop = loop
         this.clicButtonLoop (this.loop)
     }
@@ -179,7 +197,6 @@ class ButtonPlayPause extends HTMLElement {
     }
 
     clicButtonLoop (loop) {
-        this.shadowRoot.querySelector ("#loop").style.borderStyle = loop ? "inset" : "outset"
         this.audioComponent.loop (loop)
     }
 

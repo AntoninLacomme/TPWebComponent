@@ -1,4 +1,5 @@
-import "../ButtonPlayPause/ButtonPlayPause.js";
+import "../ButtonPlayPause/ButtonPlayPause.js"
+import "../PlayList/PlayList.js"
 
 const getBaseURL = () => { return new URL (".", import.meta.url)}
 
@@ -39,12 +40,25 @@ template.innerHTML = /*html*/`
         backgroun-color: green;
         z-index: 1;
     }
+    
+    #name-piste {
+        position: absolute;
+        bottom: 160px;
+        color: ivory;
+        padding: 3px;
+        text-decoration: underline;
+        font-style: italic;
+    }
 </style>
 
 <div>
     <audio id="myPlayer" crossorigin="anonymous">Your browser does not support the <code>audio</code></audio>
-
+    <div id="container-playlist">
+        <play-list></play-list>
     <div>
+    
+    
+    <div id="name-piste"></div>
     <canvas id="canvas-music-progress-bar"></canvas>
         <div id="font-progress-bar">
             <div id="progress-bar"></div>
@@ -73,7 +87,7 @@ class MyAudioComponent extends HTMLElement {
 
     connectedCallback() {
         this.shadowRoot.appendChild(template.content.cloneNode(true))
-        this.shadowRoot.querySelectorAll ("button-play-pause").forEach ((elem) => {
+        this.shadowRoot.querySelectorAll ("button-play-pause, play-list").forEach ((elem) => {
             elem.setAudioController (this)
         })
 
@@ -97,17 +111,20 @@ class MyAudioComponent extends HTMLElement {
                 this.shadowRoot.querySelector ("button-play-pause").setloop (false)
             }
         }
-
-        this.indexPlaylist = 0;
-        this.audio.src = this.playlist[this.indexPlaylist]
-        
-        this.audio.onended = (ev) => {
-            this.indexPlaylist = (this.indexPlaylist >= this.playlist.length) ? 0 : this.indexPlaylist++
-            this.audio.src = this.playlist[this.indexPlaylist]
-        }
-        
         
         this.audioCtx = new AudioContext();
+        this.indexPlaylist = 0;
+        this.setMusic (this.playlist[this.indexPlaylist], false)
+
+        this.playlist.forEach ((piste, index) => {
+            if (piste.trim () != "")
+                this.shadowRoot.querySelector ("play-list").addPiste (piste)
+        })
+        
+        this.audio.onended = (ev) => {
+            console.log ("FIN DE LA MUSIQUE")
+            this.shadowRoot.querySelector ("play-list").nextPiste ()
+        }
 
         this.audio.addEventListener('timeupdate', (ev) => {
             this.shadowRoot.querySelector ("#progress-bar").style.width = (this.audio.currentTime / this.audio.duration) * 100 + "%"
@@ -120,6 +137,8 @@ class MyAudioComponent extends HTMLElement {
 
         this.buildAudioGraph ()
         this.animationLoop ()
+
+        this.shadowRoot.querySelector ("button-play-pause").init ()
 
         // this.shadowRoot.querySelector ("#knob1").setAttribute ("src", getBaseURL () + "./assets/imgs/LittlePhatty.png")
     }
@@ -204,7 +223,16 @@ class MyAudioComponent extends HTMLElement {
         });
     }
 
-    play (play) { 
+    setMusic (src, play=false) {
+        document.title = src.split("/").at(-1).toUpperCase ()
+        this.play (false)
+        this.reset ()
+        this.audio.src = src
+        this.play (play)
+        this.shadowRoot.querySelector ("#name-piste").innerHTML = src
+    }
+
+    play (play) {
         if (play) {
             this.audio.play ()
             this.audioCtx.resume()
@@ -213,10 +241,10 @@ class MyAudioComponent extends HTMLElement {
         }
     }
     avancer (time) { this.getPlayer ().currentTime += time }
-    loop (loop) { this.getPlayer ().loop = loop }
+    loop (loop) { this.getPlayer ().loop = loop; console.log (this.getPlayer ().loop)}
     reset () { this.getPlayer ().currentTime = 0 }
-    setVolume (volume) { this.getPlayer ().volume = volume }
-    setSpeed (speed) { this.getPlayer ().playbackRate = speed }
+    setVolume (volume) { if (this.getPlayer () != undefined) this.getPlayer ().volume = volume }
+    setSpeed (speed) { if (this.getPlayer () != undefined) this.getPlayer ().playbackRate = speed }
 }
 
 customElements.define("my-audioplayer", MyAudioComponent);
