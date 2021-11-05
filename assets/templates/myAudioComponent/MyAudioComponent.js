@@ -56,6 +56,12 @@ template.innerHTML = /*html*/`
     <div id="container-playlist">
         <play-list></play-list>
     <div>
+
+    <webaudio-slider midilearn="1" midicc="1.23" id="balance-gauche-droite"
+        src="assets/templates/myAudioComponent/assets/imgs/vsliderbody.png" 
+        knobsrc="assets/templates/myAudioComponent/assets/imgs/vsliderknob.png" 
+        value="0.5" min="0" max="1" step="0.1" basewidth="24" baseheight="128" knobwidth="24" 
+        knobheight="24" ditchlength="100" tooltip="Slider-L"></webaudio-slider>
     
     
     <div id="name-piste"></div>
@@ -122,7 +128,6 @@ class MyAudioComponent extends HTMLElement {
         })
         
         this.audio.onended = (ev) => {
-            console.log ("FIN DE LA MUSIQUE")
             this.shadowRoot.querySelector ("play-list").nextPiste ()
         }
 
@@ -140,7 +145,15 @@ class MyAudioComponent extends HTMLElement {
 
         this.shadowRoot.querySelector ("button-play-pause").init ()
 
-        // this.shadowRoot.querySelector ("#knob1").setAttribute ("src", getBaseURL () + "./assets/imgs/LittlePhatty.png")
+        // set range gauche-droite
+        console.log ("*********************************")
+        // https://jsbin.com/jarimu/edit?html,js,output
+        var source = this.audioCtx.createMediaElementSource (this.shadowRoot.querySelector ("#balance-gauche-droite"))
+        var pannernode = this.audioCtx.createStereoPanner ()
+
+        source.connect (pannernode)
+        pannernode.connect (this.audioCtx.destination)
+        console.log ("*********************************")
     }
 
     getPlayer () { return this.audio }

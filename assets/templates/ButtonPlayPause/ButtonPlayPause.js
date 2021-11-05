@@ -96,7 +96,8 @@ template.innerHTML =
 
 <div>
     <span class="span-speed">
-        <webaudio-knob id="speed" tooltip="Vitesse:%s" src="assets/templates/ButtonPlayPause/assets/bouton2.png" sprites="127" value=1 min="0.25" max="4" step=0.25>
+        <webaudio-knob id="speed" tooltip="Vitesse:%s" src="assets/templates/ButtonPlayPause/assets/bouton2.png" 
+        sprites="127" value=1 min="0.25" max="4" step=0.25>
         Volume</webaudio-knob>
     </span>
     <button id="reset">
@@ -115,7 +116,8 @@ template.innerHTML =
     </webaudio-switch>
 
     <span class="span-volume">
-        <webaudio-knob id="volume" tooltip="Volume:%s" src="assets/templates/ButtonPlayPause/assets/bouton2.png" sprites="127" value=0.05 min="0" max="1" step=0.01>
+        <webaudio-knob id="volume" tooltip="Volume:%s" src="assets/templates/ButtonPlayPause/assets/bouton2.png" 
+        sprites="127" value=0.05 min="0" max="1" step=0.01>
         Volume</webaudio-knob>
     </span>
 </div>`
