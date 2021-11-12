@@ -37,7 +37,7 @@ class PlayList extends HTMLElement {
 
         this.attachShadow({ mode: "open" });
         this.playlist = [];
-        this.currentIndex = 0;
+        this.indexPlaylist = 0;
     }
 
     connectedCallback() {
@@ -60,7 +60,7 @@ class PlayList extends HTMLElement {
         let nameFile = piste.split ("/").at(-1)
         option.innerHTML = nameFile.substring (0, nameFile.lastIndexOf ('.'))
 
-        if (this.currentIndex == this.playlist.indexOf (piste)) {
+        if (this.indexPlaylist == this.playlist.indexOf (piste)) {
             option.prepend (templateImgPlay.content.cloneNode(true))
         }
         
@@ -71,7 +71,7 @@ class PlayList extends HTMLElement {
                     this.shadowRoot.querySelectorAll ("img").forEach ((img) => img.remove ())
                 } catch (e) {}
                 this.indexPlaylist = index;
-                this.audioController.setMusic (this.playlist[this.indexPlaylist], false)
+                this.audioController.setMusic (this.playlist[this.indexPlaylist], this.audioController.playingMusic)
 
                 option.prepend (templateImgPlay.content.cloneNode(true))
             }
@@ -81,8 +81,12 @@ class PlayList extends HTMLElement {
     }
 
     nextPiste () {
-        this.currentIndex = (this.currentIndex >= this.playlist.length) ? 0 : this.currentIndex + 1
-        this.audioController.setMusic (this.playlist[this.currentIndex], true)
+        this.indexPlaylist = (this.indexPlaylist >= this.playlist.length) ? 0 : this.indexPlaylist + 1
+        this.audioController.setMusic (this.playlist[this.indexPlaylist], this.audioController.playingMusic)
+        try {
+            this.shadowRoot.querySelectorAll ("img").forEach ((img) => img.remove ())
+        } catch (e) {}
+        this.shadowRoot.querySelectorAll (".option")[this.indexPlaylist].prepend (templateImgPlay.content.cloneNode(true))
     }
 }
 

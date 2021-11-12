@@ -1,4 +1,5 @@
-import './libs/webaudio-controls.js';
+import './libs/webaudio-controls.js'
+import "../MenuAvancee/MenuAvancee.js"
 
 const getBaseURL = () => {
     const base = new URL('.', import.meta.url);
@@ -93,6 +94,7 @@ template.innerHTML =
     }
 
 </style>
+<menu-avance></menu-avance>
 
 <div>
     <span class="span-speed">
@@ -117,7 +119,7 @@ template.innerHTML =
 
     <span class="span-volume">
         <webaudio-knob id="volume" tooltip="Volume:%s" src="assets/templates/ButtonPlayPause/assets/bouton2.png" 
-        sprites="127" value=0.05 min="0" max="1" step=0.01>
+        sprites="127" value=0.8 min="0" max="1" step=0.01>
         Volume</webaudio-knob>
     </span>
 </div>`
@@ -168,10 +170,13 @@ class ButtonPlayPause extends HTMLElement {
     init () {
         this.switchVolume ()
         this.switchVolume ()
+
+        this.shadowRoot.querySelector ("menu-avance").init ()
     }
 
     setAudioController (audioComponent) {
         this.audioComponent = audioComponent
+        this.shadowRoot.querySelector ("menu-avance").setAudioController (audioComponent)
     }
 
     setloop (loop) {
