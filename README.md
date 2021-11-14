@@ -10,15 +10,15 @@ Le bandeau de lecture représente la barre de progression de la musique en cours
 Le canvas derrière la barre d'action est cliquable et permet de set le currentTime de lecture.
 
 # Les raccourcis claviers :
-  - Space: play / pause
-  - Flèhe de droite : avancer de 10 secondes
-  - Flèches de gauche: reculer de 10 secondes
-  - R : reset la musique à 0
-  - L : active / désactive le loop
-  - Ctrl + flèhe de droite : morceau suivant
-  - Ctrl + flèche de gauche : morceau précedant
-  - + : augmenter le son
-  - - : diminuer le son
+  - ```Space``` : play / pause
+  - ```Flèhe de droite``` : avancer de 10 secondes
+  - ```Flèches de gauche``` : reculer de 10 secondes
+  - ```R``` : reset la musique à 0
+  - ```L``` : active / désactive le loop
+  - ```Ctrl + flèhe de droite``` : morceau suivant
+  - ```Ctrl + flèche de gauche``` : morceau précedant
+  - ```+``` : augmenter le son
+  - ```-``` : diminuer le son
 
 De gauche à droite, on trouve :
   - le temps courant / le temps total du morceau en cours
