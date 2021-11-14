@@ -8,6 +8,8 @@ template.innerHTML = `
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    max-height: 40%;
+    overflow-y: scroll
 }
 
 .option {
@@ -17,12 +19,12 @@ template.innerHTML = `
     align-items: center;
     min-width: 220px;    
     justify-content: flex-end;
+    width: 100%;
 }
 
 .option:hover {
-    padding: 10px;
-    font-size: 20px;
-    transition: 0.3s;
+    background-color: silver;
+    transition: 0.5s;
 }
 </style>
 
@@ -80,13 +82,30 @@ class PlayList extends HTMLElement {
         this.shadowRoot.querySelector ("#list").appendChild (option)
     }
 
-    nextPiste () {
-        this.indexPlaylist = (this.indexPlaylist >= this.playlist.length) ? 0 : this.indexPlaylist + 1
+    setPiste () {
         this.audioController.setMusic (this.playlist[this.indexPlaylist], this.audioController.playingMusic)
         try {
             this.shadowRoot.querySelectorAll ("img").forEach ((img) => img.remove ())
         } catch (e) {}
         this.shadowRoot.querySelectorAll (".option")[this.indexPlaylist].prepend (templateImgPlay.content.cloneNode(true))
+    }
+
+    nextPiste () {
+        this.indexPlaylist = (this.indexPlaylist >= this.playlist.length-1) ? 0 : this.indexPlaylist + 1
+        this.setPiste ()
+    }
+
+    lastPiste () {
+        this.indexPlaylist = (this.indexPlaylist <= 0) ? this.playlist.length-1 : this.indexPlaylist - 1
+        this.setPiste ()
+    }
+
+    avancer (n) {
+        if (n > 0) {
+            for (let i=0; i<n; i++) this.nextPiste ()
+        } else {
+            for (let i=n; i<0; i++) this.lastPiste ()
+        }
     }
 }
 

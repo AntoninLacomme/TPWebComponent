@@ -422,15 +422,15 @@
             this.setMidiController(ch, cc);
         }
         if(this.midilearn && this.id){
-          // if(webAudioControlsWidgetManager && webAudioControlsWidgetManager.midiLearnTable){
-          //   const ml=webAudioControlsWidgetManager.midiLearnTable;
-          //   for(let i=0; i < ml.length; ++i){
-          //     if(ml[i].id==this.id){
-          //       this.setMidiController(ml[i].cc.channel, ml[i].cc.cc);
-          //       break;
-          //     }
-          //   }
-          // }
+          if(webAudioControlsWidgetManager && webAudioControlsWidgetManager.midiLearnTable){
+            const ml=webAudioControlsWidgetManager.midiLearnTable;
+            for(let i=0; i < ml.length; ++i){
+              if(ml[i].id==this.id){
+                this.setMidiController(ml[i].cc.channel, ml[i].cc.cc);
+                break;
+              }
+            }
+          }
         }
         this.setupImage();
         this.digits=0;

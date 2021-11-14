@@ -1,5 +1,4 @@
 import './libs/webaudio-controls.js'
-import "../MenuAvancee/MenuAvancee.js"
 
 const getBaseURL = () => {
     const base = new URL('.', import.meta.url);
@@ -66,11 +65,11 @@ template.innerHTML =
     }
 
     .span-volume {
-        margin-left: 2em;
+        margin-left: 1.5em;
     }
 
     .span-speed {
-        margin-right: 2em;
+        margin-right: 1.5em;
         align-items: flex-end;
     }
 
@@ -90,16 +89,14 @@ template.innerHTML =
 
     #speed, #volume, #loop {
         position: relative;
-        top: 23px;
+        top: 20px;
     }
 
 </style>
-<menu-avance></menu-avance>
-
 <div>
     <span class="span-speed">
-        <webaudio-knob id="speed" tooltip="Vitesse:%s" src="assets/templates/ButtonPlayPause/assets/bouton2.png" 
-        sprites="127" value=1 min="0.25" max="4" step=0.25>
+        <webaudio-knob id="speed" tooltip="Vitesse:%s" src="assets/templates/ButtonPlayPause/assets/LittlePhatty.png" 
+        sprites="100" value=1 min="0.25" max="4" step=0.25 width="45" height="45">
         Volume</webaudio-knob>
     </span>
     <button id="reset">
@@ -118,8 +115,8 @@ template.innerHTML =
     </webaudio-switch>
 
     <span class="span-volume">
-        <webaudio-knob id="volume" tooltip="Volume:%s" src="assets/templates/ButtonPlayPause/assets/bouton2.png" 
-        sprites="127" value=0.8 min="0" max="1" step=0.01>
+        <webaudio-knob id="volume" tooltip="Volume:%s" src="assets/templates/ButtonPlayPause/assets/LittlePhatty.png" 
+        sprites="100" value=0.8 min="0" max="1" step=0.01 width="45" height="45">
         Volume</webaudio-knob>
     </span>
 </div>`
@@ -146,7 +143,7 @@ class ButtonPlayPause extends HTMLElement {
         buttonPlayPause.innerHTML = templatePlay.innerHTML
         let clic = false
         buttonPlayPause.onclick = () => this.clicButtonPlayPause (clic = !clic)
-
+        
         // set button reculer de 10s
         this.shadowRoot.querySelector ("#back-10").onclick = () => this.clicButtonReculer ()
 
@@ -170,13 +167,10 @@ class ButtonPlayPause extends HTMLElement {
     init () {
         this.switchVolume ()
         this.switchVolume ()
-
-        this.shadowRoot.querySelector ("menu-avance").init ()
     }
 
     setAudioController (audioComponent) {
         this.audioComponent = audioComponent
-        this.shadowRoot.querySelector ("menu-avance").setAudioController (audioComponent)
     }
 
     setloop (loop) {
@@ -185,13 +179,13 @@ class ButtonPlayPause extends HTMLElement {
         this.clicButtonLoop (this.loop)
     }
 
+    setVolume (volume) {
+        if (volume < 0) volume = 0;
+        if (volume > 1) volume = 0.99;
+        this.shadowRoot.querySelector ("#volume").value = volume
+    }
+
     clicButtonPlayPause (clic) {
-        let button = this.shadowRoot.querySelector ("#search-button")
-        if (clic) {
-            button.innerHTML = templatePause.innerHTML
-        } else {
-            button.innerHTML = templatePlay.innerHTML
-        }
         this.audioComponent.play (clic)
     }
 
@@ -214,6 +208,15 @@ class ButtonPlayPause extends HTMLElement {
     switchVolume () { this.audioComponent.setVolume (this.shadowRoot.querySelector ("#volume").value) }
 
     switchSpeed () { this.audioComponent.setSpeed (this.shadowRoot.querySelector ("#speed").value) }
+
+    setPlayPause (playing) {
+        let button = this.shadowRoot.querySelector ("#search-button")
+        if (playing) {
+            button.innerHTML = templatePause.innerHTML
+        } else {
+            button.innerHTML = templatePlay.innerHTML
+        }
+    }
 }
 
 customElements.define("button-play-pause", ButtonPlayPause);
