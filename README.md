@@ -17,6 +17,8 @@ Le canvas derrière la barre d'action est cliquable et permet de set le currentT
   - L : active / désactive le loop
   - Ctrl + flèhe de droite : morceau suivant
   - Ctrl + flèche de gauche : morceau précedant
+  - + : augmenter le son
+  - - : diminuer le son
 
 De gauche à droite, on trouve :
   - le temps courant / le temps total du morceau en cours
