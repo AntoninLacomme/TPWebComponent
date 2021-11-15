@@ -10,6 +10,10 @@ window.addEventListener ("keyup", (ev) => {
         case "R": audioComponent.reset (); break;
         case "L": audioComponent.setLoop (); break;
     }
+    let number = parseInt(ev.key.toUpperCase ())
+    if (number+1) {
+        audioComponent.setPercentCurrentTime (number * 10)
+    }
 })
 
 window.addEventListener ("keypress", (ev) => {

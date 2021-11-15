@@ -449,6 +449,9 @@ class MyAudioComponent extends HTMLElement {
     }
     avancerPlaylist () { this.shadowRoot.querySelector ("play-list").avancer (1) }
     reculerPlaylist () { this.shadowRoot.querySelector ("play-list").avancer (-1) }
+    setPercentCurrentTime (percent) {
+        this.audio.currentTime = this.audio.duration * percent / 100
+    }
 }
 
 customElements.define("my-audioplayer", MyAudioComponent);

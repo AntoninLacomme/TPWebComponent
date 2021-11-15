@@ -19,6 +19,7 @@ Le canvas derrière la barre d'action est cliquable et permet de set le currentT
   - ```Ctrl + flèche de gauche``` : morceau précedant
   - ```+``` : augmenter le son
   - ```-``` : diminuer le son
+  - ```0 à 9```: permet de passer à n% de la musique
 
 De gauche à droite, on trouve :
   - le temps courant / le temps total du morceau en cours
