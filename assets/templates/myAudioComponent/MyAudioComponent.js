@@ -332,6 +332,8 @@ class MyAudioComponent extends HTMLElement {
                 this.drawStereo ()
                 this.lastDataArrayStereo = JSON.parse(JSON.stringify(this.dataArrayStereo));
                 this.angleAlpha += 0.001;
+
+                if (this.angleAlpha == 360) { this.angleAlpha = 0 }
         }
         
         requestAnimationFrame(() => {
